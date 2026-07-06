@@ -36,14 +36,14 @@ When the server does not provide instructions (e.g., during secondary rate limit
 ### Exponential Backoff
 Exponential backoff increases the wait time exponentially with each consecutive failure, giving the server time to recover.
 
-$$\text{wait} = \text{base\_backoff} \times 2^{\text{attempt}}$$
+$$\text{wait} = \text{base backoff} \times 2^{\text{attempt}}$$
 
 ### The Thundering Herd Problem & Jitter
 If multiple client instances hit a rate limit or a server outage at the same time, they will all fail at roughly the same time. If they all use a simple exponential backoff, they will sleep for the exact same duration and wake up to retry at the exact same millisecond. This creates massive traffic spikes, keeping the server overloaded.
 
 To prevent this, clients introduce **random jitter** (a randomized offset) to desynchronize their retries.
 
-$$\text{wait} = \text{base\_backoff} \times 2^{\text{attempt}} + \text{random\_jitter}$$
+$$\text{wait} = \text{base backoff} \times 2^{\text{attempt}} + \text{random jitter}$$
 
 * **Full Jitter:** Typically, `random_jitter` is selected uniformly between `0` and a maximum value (e.g., `random.uniform(0, 1)` or scaling dynamically with the backoff).
 
